@@ -1,0 +1,17 @@
+services:
+  front-admin:
+    image: node:22
+    volumes:
+      - ./front-admin/app:/app
+    ports:
+      - "4200:4200"
+    command: tail -f /dev/null
+
+  front-app:
+    image: node:22
+    volumes:
+      - ./front-app/app:/app
+    ports:
+      - "4201:4200"
+    command: tail -f /dev/null
+   
