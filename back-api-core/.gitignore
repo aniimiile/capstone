@@ -1,0 +1,78 @@
+# .NET Core
+*.exe
+*.dll
+*.pdb
+*.vshost.exe
+*.vshost.exe.manifest
+*.mdb
+*.csproj.user
+*.dbmdl
+*.log
+
+# build outputs
+bin/
+obj/
+app.publish/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider files
+.idea/
+*.sln.iml
+
+# Visual Studio Code
+.vscode/
+.vscode/*
+
+# Docker
+docker-compose.yml
+docker-compose.override.yml
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# NLog
+internal-nlog.txt
+
+# npm package
+node_modules/
+libpeerconnection.log
+
+# Debug
+debug/
+
+# Environment variables
+.env
+
+# Uploads
+/uploads/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Database files
+*.mdf
+*.ldf
+
+# Ignore database backups
+*.bak
+
+# Ignore compiled UI artifacts
+dist/
+build/
+
+# Ignore coverage files
+coverage/
+
+# Ignore dependency directories
+packages/
