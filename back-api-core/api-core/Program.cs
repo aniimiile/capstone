@@ -4,6 +4,9 @@ using Microsoft.OpenApi.Models;
 using static api_core.Security.ApiKeyAuthAttribute;
 using NLog;
 using NLog.Web;
+using Npgsql;
+using System.Data;
+using Microsoft.AspNetCore.Http.Features;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
 
@@ -20,8 +23,19 @@ var apiKey = Environment.GetEnvironmentVariable("API_KEY");
 builder.Logging.ClearProviders();  // Eliminar otros proveedores de logging
 builder.Host.UseNLog();
 
+builder.Services.AddScoped<IDbConnection>(sp =>
+    new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")));
+
+
 builder.Services.AddControllers();
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100 MB para archivos
+});
+
 builder.Services.AddHttpClient<faceValidationService>();
+builder.Services.AddScoped<appService>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen(c =>
@@ -36,6 +50,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     c.OperationFilter<AuthResponsesOperationFilter>();
+
 });
 
 var app = builder.Build();
