@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular'; // Asegúrate de importar AlertController
+import { AlertController, LoadingController } from '@ionic/angular'; // Asegúrate de importar AlertController
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ContentService } from 'src/app/core/services/content.service';
 
@@ -32,7 +32,8 @@ export class SosPage implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private renderer: Renderer2,
-    private alertController: AlertController, // Asegúrate de inyectar el servicio AlertController
+    private alertController: AlertController,
+    private loadingController: LoadingController,
     private authService: AuthService,
     private content: ContentService
   ) {
@@ -126,6 +127,30 @@ export class SosPage implements OnInit {
     }
   }
 
+  async showAlertConfirm(message: string, onConfirm: () => void) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar emergencia',
+      message: message,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Emergencia cancelada por el usuario.');
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            onConfirm();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   onSubmit() {
     console.log('Estado del formulario:', this.formSOS.value);
     if (this.formSOS.valid && this.idNeighborhoodBoard && this.userRUT) {
@@ -141,20 +166,36 @@ export class SosPage implements OnInit {
 
       console.log('Datos de emergencia a enviar:', emergencyData);
 
-      this.content.sendEmergencyData(emergencyData).subscribe(
-        (response) => {
-          console.log('Respuesta del servidor:', response);
-          if (response.status) {
-            this.router.navigate(['/tabs/tab1']);
-          } else {
-            this.showAlert('Error al enviar la emergencia. Por favor, inténtalo de nuevo.');
+      this.showAlertConfirm('¿Confirmar emergencia?', async () => {
+        // Muestra el loading mientras se registra la emergencia
+        const loading = await this.loadingController.create({
+          message: 'Registrando emergencia...',
+        });
+        await loading.present();
+
+        this.content.sendEmergencyData(emergencyData).subscribe(
+          async (response) => {
+            console.log('Respuesta del servidor:', response);
+            await loading.dismiss(); // Oculta el loading
+            if (response.status) {
+              // Muestra el alert de éxito
+              const successAlert = await this.alertController.create({
+                header: 'Éxito',
+                message: 'Emergencia registrada',
+                buttons: ['OK']
+              });
+              await successAlert.present();
+            } else {
+              this.showAlert('Error al enviar la emergencia. Por favor, inténtalo de nuevo.');
+            }
+          },
+          async (error) => {
+            await loading.dismiss(); // Oculta el loading en caso de error
+            this.showAlert('Error en el servidor. Por favor, inténtalo más tarde.');
+            console.error('Error al enviar la emergencia:', error);
           }
-        },
-        (error) => {
-          this.showAlert('Error en el servidor. Por favor, inténtalo más tarde.');
-          console.error('Error al enviar la emergencia:', error);
-        }
-      );
+        );
+      });
     } else {
       this.showAlert('Por favor, completa todos los campos obligatorios.');
     }

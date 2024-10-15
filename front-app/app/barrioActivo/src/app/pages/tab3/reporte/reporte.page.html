@@ -1,4 +1,44 @@
 <app-header [pageTitle]="'REPORTE'"></app-header>
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding form-container">
+    <form [formGroup]="formReporte" (ngSubmit)="onSubmit()">
+        <ion-text class="form-header">
+            <p>Completa el formulario para ingresar un <span>reporte.</span></p>
+        </ion-text>
 
+        <ion-item class="input-item">
+            <ion-label class="input-label" position="stacked">Título</ion-label>
+            <ion-input formControlName="title"
+                placeholder="Escriba aquí"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+            <ion-label class="input-label"
+                position="stacked">Descripción</ion-label>
+            <ion-textarea formControlName="description"
+                placeholder="Escriba aquí" maxlength="200"></ion-textarea>
+        </ion-item>
+
+        <ion-item class="input-item">
+            <ion-label class="input-label" position="stacked">Tomar
+                foto</ion-label><br>
+            <input type="file" (change)="onFileSelected($event, 'image')"
+                accept="image/*" capture="environment" style="display: none;"
+                #fileInputCamera />
+            <button type="button" class="custom-upload-button"
+                (click)="fileInputCamera.click()">
+                <ion-icon name="camera-outline" slot="start"></ion-icon>
+                {{ formReporte.controls['image'].value?.name || 'Tomar foto' }}
+            </button><br>
+            <ion-note color="medium">{{
+                formReporte.controls['image'].value?.name ||
+                'No hay foto seleccionada' }}</ion-note>
+            <div *ngIf="imagePreview" class="image-preview-container">
+                <ion-img [src]="imagePreview"></ion-img>
+            </div>
+        </ion-item>
+
+        <div class="button-container">
+            <button type="submit" class="submit-button">Guardar</button>
+        </div>
+    </form>
 </ion-content>
