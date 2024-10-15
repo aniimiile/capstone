@@ -1,0 +1,42 @@
+<app-header [pageTitle]="'Emergencia'"></app-header>
+<ion-content [fullscreen]="true" class="ion-padding text-center">
+    <form [formGroup]="formSOS" (ngSubmit)="onSubmit()">
+        <ion-text>
+            <p>Completa el formulario para ingresar una
+                <span>emergencia.</span></p>
+        </ion-text>
+
+        <ion-text class="text-center">
+            <h4>Selecciona una categoría</h4>
+        </ion-text>
+        <ion-select formControlName="id_category" label="Categoría"
+            label-placement="floating" fill="outline">
+            <ion-select-option *ngFor="let categoria of categorias"
+                [value]="categoria.id_category">
+                {{ categoria.category }}
+            </ion-select-option>
+        </ion-select>
+        <br>
+
+        <ion-text class="text-center">
+            <h4>Agrega una ubicación</h4>
+        </ion-text>
+        <!-- <input type="text" #inputPlaces id="inputPlaces"
+            formControlName="address" placeholder="Buscar ubicación"> -->
+        <input type="text" formControlName="address" #inputPlaces
+            id="inputPlaces" placeholder="Ingresa dirección" />
+
+        <div class="mapa" #divMap></div>
+        <br>
+
+        <ion-text>
+            <p>Genera una <span>descripción</span> si es necesario.</p>
+        </ion-text>
+        <ion-textarea formControlName="description" label="Comentario"
+            labelPlacement="floating" maxlength="200"></ion-textarea>
+
+        <button type="submit"
+            class="btn btn-block mt-3 continuarBtn">Guardar</button>
+    </form>
+
+</ion-content>

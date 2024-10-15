@@ -1,0 +1,59 @@
+<app-header [pageTitle]="'Perfil'"></app-header>
+
+<ion-content>
+  <!-- Profile Section -->
+  <div class="profile-container">
+    <div class="profile-header">
+      <ion-avatar>
+        <img
+          alt="Foto de perfil"
+          src="../../../../assets/profile.jpg" />
+      </ion-avatar><br />
+      <h2>{{userData.first_Name }} {{userData.first_Surname}}</h2>
+      <p>{{ neighborhoodBoardName }}</p>
+    </div>
+
+    <div class="profile-info ion-padding">
+      <br>
+      <ion-text><h3>Datos Personales:</h3></ion-text>
+      <br>
+      <!-- Nombre completo -->
+      <ion-item>
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label>{{userData.first_Name}} {{userData.second_Name}}
+          {{userData.first_Surname}} {{userData.second_Surname}}</ion-label>
+      </ion-item>
+
+      <!-- RUT -->
+      <ion-item>
+        <ion-icon slot="start" name="id-card-outline"></ion-icon>
+        <ion-label>{{userData.rut}}</ion-label>
+      </ion-item>
+
+      <!-- Fecha de nacimiento -->
+      <ion-item>
+        <ion-icon slot="start" name="calendar-outline"></ion-icon>
+        <ion-label>{{userData.birthdate | date:
+          'dd \'de\' MMMM \'de\' yyyy'}}</ion-label>
+      </ion-item>
+
+      <!-- Teléfono -->
+      <ion-item>
+        <ion-icon slot="start" name="call-outline"></ion-icon>
+        <ion-label>+ {{userData.cellphone}}</ion-label>
+      </ion-item>
+
+      <!-- Email -->
+      <ion-item>
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-label>{{userData.email}}</ion-label>
+      </ion-item>
+
+      <!-- Dirección -->
+      <ion-item>
+        <ion-icon slot="start" name="location-outline"></ion-icon>
+        <ion-label>{{userData.address}}</ion-label>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

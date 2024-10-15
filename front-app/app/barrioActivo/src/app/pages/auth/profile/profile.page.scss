@@ -1,0 +1,42 @@
+.profile-container {
+    text-align: center;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    /* Alinea los elementos verticalmente */
+    justify-content: center;
+    /* Centra verticalmente */
+    align-items: center;
+    /* Centra horizontalmente */
+    padding: 20px;
+    background-color: var(--ion-color-tertiary);
+    border-radius: 0 0 10% 10%;
+    height: 250px;
+
+    ion-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    h2 {
+        font-weight: bolder;
+    }
+}
+
+.profile-info ion-item {
+    --background: transparent;
+    --padding-start: 0;
+}
+
+.linkedin-info {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f4f4f4;
+}
+
+h2 {
+    font-size: 22px;
+    margin: 0;
+}
