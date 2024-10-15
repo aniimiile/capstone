@@ -54,6 +54,20 @@
         <ion-icon slot="start" name="location-outline"></ion-icon>
         <ion-label>{{userData.address}}</ion-label>
       </ion-item>
+
+      <!-- Emergencias -->
+      <ion-item>
+        <ion-icon slot="start"
+          [name]="userData.emergency_enabled ? 'checkmark-circle-outline' : 'close-circle-outline'"></ion-icon>
+        <ion-label>
+          <span *ngIf="userData.emergency_enabled; else noEmergency">
+            Usted puede generar emergencias
+          </span>
+          <ng-template #noEmergency>
+            Usted no puede generar emergencias, comuníquese con el administrador
+          </ng-template>
+        </ion-label>
+      </ion-item>
     </div>
   </div>
 </ion-content>
