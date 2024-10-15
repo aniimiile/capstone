@@ -1,0 +1,234 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title class="ion-text-center" color="dark">
+      Registro de Cuenta
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formRegister">
+    <div>
+      <!-- Fondo gradiente y tarjeta con altura 80% -->
+      <div class="card-body p-4 d-flex flex-column justify-content-between">
+        <!-- Primer Paso: Selección de Junta de Vecino -->
+        <div *ngIf="currentStep === 1"
+          class="text-center d-flex flex-column justify-content-between flex-grow-1">
+          <div>
+            <h5 class="card-title mb-4">Selección de Junta de Vecino</h5>
+            <div class="form-group d-flex justify-content-center">
+              <ion-select formControlName="id_neighborhood_board"
+                label="Junta de Vecino"
+                label-placement="floating" fill="outline">
+                <ion-select-option *ngFor="let junta of juntas"
+                  [value]="junta.id_neighborhood_board">
+                  {{ junta.name }}
+                </ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-block mt-3 continuarBtn"
+              (click)="continuarRegistro()">
+              Continuar
+            </button>
+          </div>
+        </div>
+        <!-- Segundo Paso: Cédula de Identidad -->
+        <div *ngIf="currentStep === 2"
+          class="text-center d-flex flex-column justify-content-between flex-grow-1">
+          <div>
+            <h5 class="card-title text-center mb-4">Cédula de Identidad</h5>
+          </div>
+
+          <!-- Botones de escaneo -->
+          <div>
+            <button class="btn btn-block mt-3" (click)="scanIdCard()">Escanear
+              Cédula</button><br>
+            <!-- Indicador de escaneo de cédula -->
+            <div *ngIf="isIdCardScanned" class="text-success mt-2">
+              <ion-icon name="checkmark-circle-outline"></ion-icon> Cédula
+              escaneada correctamente
+            </div>
+
+            <button class="btn btn-block mt-3" (click)="scanFace()">Escanear
+              Cara</button><br>
+            <!-- Indicador de escaneo de cara -->
+            <div *ngIf="isFaceScanned" class="text-success mt-2">
+              <ion-icon name="checkmark-circle-outline"></ion-icon> Cara
+              escaneada correctamente
+            </div>
+
+            <button class="btn btn-warning btn-block mt-3 continuarBtn"
+              (click)="validateFace()">
+              Validar Imágenes
+            </button>
+          </div>
+
+          <!-- Mensaje de validación de imágenes -->
+          <div *ngIf="validationMessage" class="mt-2"
+            [ngClass]="{'text-success': isValidationSuccessful, 'text-danger': !isValidationSuccessful}">
+            {{ validationMessage }}
+          </div>
+
+          <div>
+            <button class="btn btn-warning btn-block mt-3 continuarBtn"
+              (click)="continuarRegistro()">
+              Continuar
+            </button>
+          </div>
+        </div>
+
+        <!-- Tercer Paso: Datos Personales -->
+        <div *ngIf="currentStep === 3"
+          class="text-center d-flex flex-column justify-content-between flex-grow-1">
+          <div>
+            <h5 class="card-title">Datos Personales</h5><br>
+            <ion-input type="text" label="RUT" labelPlacement="floating"
+              fill="outline"
+              formControlName="rut"></ion-input>
+
+            <ion-input type="text" label="Primer Nombre"
+              labelPlacement="floating"
+              fill="outline" formControlName="first_name"></ion-input>
+
+            <ion-input type="text" label="Segundo Nombre"
+              labelPlacement="floating"
+              fill="outline" formControlName="second_name"></ion-input>
+
+            <ion-input type="text" label="Primer Apellido"
+              labelPlacement="floating"
+              fill="outline" formControlName="first_surname"></ion-input>
+
+            <ion-input type="text" label="Segundo Apellido"
+              labelPlacement="floating"
+              fill="outline" formControlName="second_surname"></ion-input>
+
+            <ion-input type="text" label="Dirección" labelPlacement="floating"
+              fill="outline" formControlName="address"></ion-input>
+
+            <ion-input type="text" label="Teléfono" labelPlacement="floating"
+              fill="outline" formControlName="cellphone"></ion-input>
+
+            <ion-input type="text" label="Email" labelPlacement="floating"
+              fill="outline" formControlName="email"></ion-input>
+
+            <ion-input type="password" label="Contraseña"
+              labelPlacement="floating"
+              fill="outline" formControlName="password"></ion-input>
+
+            <ion-input type="date" label="Fecha de Nacimiento"
+              labelPlacement="floating"
+              fill="outline" formControlName="birthdate"></ion-input><br>
+
+            <ion-label position="floating">Subir Comprobante de
+              Domicilio</ion-label><br>
+            <input type="file"
+              (change)="onFileSelected($event, 'address_verification')"
+              accept="image/*, .pdf" style="display: none;" #fileInput />
+
+            <button expand="full" class="custom-upload-button"
+              (click)="fileInput.click()">
+              <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+              {{ formRegister.controls['address_verification_url'].value?.name
+              || 'Seleccionar archivo' }}
+            </button>
+            <br>
+            <ion-note color="medium">
+              {{ formRegister.controls['address_verification_url'].value?.name
+              || 'No hay archivo seleccionado' }}
+            </ion-note>
+
+          </div>
+          <div>
+            <button class="btn btn-warning btn-block mt-3 continuarBtn"
+              (click)="continuarRegistro()">
+              Continuar
+            </button>
+          </div>
+        </div>
+
+        <!-- Cuarto Paso: Confirmación -->
+        <div *ngIf="currentStep === 4"
+          class="text-center d-flex flex-column justify-content-between flex-grow-1">
+          <div>
+            <h5 class="card-title">Confirma tus datos</h5><br>
+            <table>
+              <tbody>
+                <tr>
+                  <th>Junta seleccionada:</th>
+                  <td>{{ getSelectedJuntaName() }}</td>
+                </tr><br>
+                <tr>
+                  <br>
+                  <tr>
+                    <th>RUT:</th>
+                    <td>{{ formRegister.value.rut }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Primer Nombre:</th>
+                    <td>{{ formRegister.value.first_name }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Segundo Nombre:</th>
+                    <td>{{ formRegister.value.second_name }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Primer Apellido:</th>
+                    <td>{{ formRegister.value.first_surname }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Segundo Apellido:</th>
+                    <td>{{ formRegister.value.second_surname }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Fecha de Nacimiento:</th>
+                    <td>{{ formRegister.value.birthdate | date:'dd-MMM-yyyy'
+                      }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Email:</th>
+                    <td>{{ formRegister.value.email }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Dirección:</th>
+                    <td>{{ formRegister.value.address }}</td>
+                  </tr><br>
+                  <tr>
+                    <th>Teléfono:</th>
+                    <td>{{ formRegister.value.cellphone }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <ion-button expand="block" color="tertiary"
+                [disabled]="isSubmitting" (click)="submitForm()">
+                <ion-spinner *ngIf="isSubmitting" name="crescent"></ion-spinner>
+                <ion-icon *ngIf="!isSubmitting" slot="start"
+                  name="checkmark-circle-outline"></ion-icon>
+                {{ isSubmitting ? 'Registrando...' : 'Registrarse' }}
+              </ion-button>
+              <ion-loading
+                id="loading"
+                message="Cargando..."
+                duration="3000"
+                spinner="crescent"
+                backdropDismiss="false">
+              </ion-loading>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- Botón flotante en la esquina inferior derecha para retroceder -->
+    <div class="floating-back-button">
+      <button class="btn rounded-circle shadow-lg"
+        (click)="retrocederRegistro()"
+        style="position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+        <ion-icon name="arrow-back" class="text-muted"
+          style="font-size: 20px;"></ion-icon>
+      </button>
+    </div>
+
+  </ion-content>

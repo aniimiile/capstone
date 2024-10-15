@@ -1,0 +1,40 @@
+.container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+
+    .img {
+        height: 40%;
+        max-height: 500px;
+        /* Maximum height is 30% of the viewport height */
+        width: 80%;
+        max-width: 500px;
+        margin: 20px auto;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    ion-item {
+        --highlight-color-focused: var(--ion-color-tertiary);
+        --background: #f4f4f4;
+        --border-radius: 10px;
+        width: 85%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .button {
+        ion-button {
+            width: 60%;
+            --border-radius: 50px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .forgot-password {
+            width: 80%;
+            color: var(--ion-color-secondary);
+        }
+    }
+}

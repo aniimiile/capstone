@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar [color]="showBackButton ? 'light' : 'tertiary'"
+    class="header-bar">
+    <div
+      class="container-fluid d-flex justify-content-between align-items-center">
+      <!-- Título de la aplicación o nombre de la página -->
+      <h1 class="header-title">{{ pageTitle || 'BarrioActivo' }}</h1>
+      <!-- Botón de retroceso (opcional) -->
+      <ion-buttons slot="end" *ngIf="showBackButton">
+        <ion-button (click)="goBack()">
+          <ion-icon name="arrow-back-circle-outline" color="dark"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <!-- Icono de usuario en el lado derecho (opcional) -->
+      <ion-buttons slot="end" *ngIf="!showBackButton">
+        <ion-button (click)="goProfile()">
+          <ion-icon name="person-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-toolbar>
+</ion-header>

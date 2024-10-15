@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <!-- LOGO -->
+    <ion-img
+      class="img"
+      src="../../../assets/logo2.png"
+      alt="BarrioActivo Logo"></ion-img>
+    <h1>Bienvenido</h1>
+    <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+      <div class="ion-padding">
+        <!-- Email input -->
+        <ion-item>
+          <ion-input
+            labelPlacement="floating"
+            label="Email"
+            type="email"
+            formControlName="email"></ion-input>
+          <ion-icon slot="end" name="mail-outline"></ion-icon>
+        </ion-item>
+        <br />
+        <ion-item>
+          <ion-input
+            labelPlacement="floating"
+            label="Contraseña"
+            [type]="passwordType"
+            formControlName="password">
+          </ion-input>
+          <ion-icon
+            slot="end"
+            [name]="passwordIcon"
+            (click)="togglePasswordVisibility()">
+          </ion-icon>
+        </ion-item>
+      </div>
+      <div class="button">
+        <ion-button color="tertiary" type="submit">Iniciar sesión</ion-button>
+        <ion-button class="forgot-password" fill="clear">¿Has olvidado tu
+          contraseña?</ion-button>
+        <ion-button fill="clear" color="dark"
+          (click)="goToInscripcion()">Registrarse</ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

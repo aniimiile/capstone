@@ -1,0 +1,7 @@
+{
+  "name": "barrioActivo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
